@@ -39,11 +39,12 @@ func Category(category string) *Logger {
 
 func (l *Logger) write() {
 	if int(logLevel) <= int(l.Level) {
-		fmt.Println(fmt.Sprintf("[%s] [%s] %-8s - %s", l.Date.Format(time.RFC3339), l.Category, l.Category, l.Message))
+		fmt.Println(fmt.Sprintf("[%s] [%s] %-8s - %s", l.Date.Format(time.RFC3339), l.Category, l.Level, l.Message))
 	}
 }
 
 func (l *Logger) handle(level Level, message string) {
+	l.Date = time.Now()
 	l.Level = level
 	l.Message = message
 	l.write()
