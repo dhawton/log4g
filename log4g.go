@@ -3,6 +3,7 @@ package log4g
 import (
 	"errors"
 	"fmt"
+	"os"
 	"time"
 )
 
@@ -14,6 +15,8 @@ const (
 )
 
 var logLevel = INFO
+var OutputStream = os.Stdout
+var ErrorStream = os.Stderr
 
 type Logger struct {
 	Date     time.Time
@@ -39,7 +42,13 @@ func Category(category string) *Logger {
 
 func (l *Logger) write() {
 	if int(logLevel) <= int(l.Level) {
-		fmt.Println(fmt.Sprintf("[%s] [%s] %-8s - %s", l.Date.Format(time.RFC3339), l.Category, l.Level, l.Message))
+		msg := fmt.Sprintf("[%s] [%s] %-8s - %s", l.Date.Format(time.RFC3339), l.Category, l.Level, l.Message)
+
+		if int(ERROR) <= int(l.Level) {
+			fmt.Fprintln(ErrorStream, msg)
+		} else {
+			fmt.Fprintln(OutputStream, msg)
+		}
 	}
 }
 
@@ -72,4 +81,5 @@ func (l *Logger) Critical(message string) {
 
 func (l *Logger) Fatal(message string) {
 	l.handle(FATAL, message)
+	os.Exit(1)
 }
