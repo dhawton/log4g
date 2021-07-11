@@ -52,34 +52,34 @@ func (l *Logger) write() {
 	}
 }
 
-func (l *Logger) handle(level Level, message string) {
+func (l *Logger) handle(level Level, format string, args ...interface{}) {
 	l.Date = time.Now()
 	l.Level = level
-	l.Message = message
+	l.Message = fmt.Sprintf(format, args...)
 	l.write()
 }
 
-func (l *Logger) Debug(message string) {
-	l.handle(DEBUG, message)
+func (l *Logger) Debug(format string, args ...interface{}) {
+	l.handle(DEBUG, format, args...)
 }
 
-func (l *Logger) Info(message string) {
-	l.handle(INFO, message)
+func (l *Logger) Info(format string, args ...interface{}) {
+	l.handle(INFO, format, args...)
 }
 
-func (l *Logger) Warning(message string) {
-	l.handle(WARNING, message)
+func (l *Logger) Warning(format string, args ...interface{}) {
+	l.handle(WARNING, format, args...)
 }
 
-func (l *Logger) Error(message string) {
-	l.handle(ERROR, message)
+func (l *Logger) Error(format string, args ...interface{}) {
+	l.handle(ERROR, format, args...)
 }
 
-func (l *Logger) Critical(message string) {
-	l.handle(CRITICAL, message)
+func (l *Logger) Critical(format string, args ...interface{}) {
+	l.handle(CRITICAL, format, args...)
 }
 
-func (l *Logger) Fatal(message string) {
-	l.handle(FATAL, message)
+func (l *Logger) Fatal(format string, args ...interface{}) {
+	l.handle(FATAL, format, args...)
 	os.Exit(1)
 }
